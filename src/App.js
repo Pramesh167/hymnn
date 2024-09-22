@@ -5,6 +5,7 @@ import LoginPage from './pages/login/LoginPage.jsx';
 import RegisterPage from './pages/register/RegisterPage.jsx'
 import AboutPage from './pages/about/AboutPage';
 import ContactPage from './pages/contact/ContactUs.jsx';
+import AdminDashboard from './pages/admindashboard/AdminDashboard.jsx';
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route path="/contact" element={<ContactPage />} />
+        <Route path="/admin-dashboard" element={<AdminDashboard />} />
       </Routes>
     </Router>
   );

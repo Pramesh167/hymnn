@@ -115,7 +115,7 @@ const ContactPage = () => {
     <h2 className="text-3xl font-semibold text-gray-800 mb-6 text-center">Visit Our Store</h2>
     <div className="rounded-lg overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
       <iframe 
-        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.0915858334144!2d85.34141247526645!3d27.716820976178933!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1970145d35ef%3A0xb11d15b9de9beab9!2sSunway%20College!5e0!3m2!1sen!2snp!4v1702565971703!5m2!1sen!2snp&markers=color:red%7Clabel:S%7C27.7168210,85.3435874" 
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3532.260677101557!2d85.33700937620029!3d27.710901025615624!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x39eb1990a6c6aa3f%3A0xd9d1affd3945c802!2sBajeko%20Sekuwa!5e0!3m2!1sen!2snp!4v1702585261682!5m2!1sen!2snp&markers=color:red%7Clabel:H%7C27.710901,85.339198"
         width="100%" 
         height="450" 
         style={{border:0}} 

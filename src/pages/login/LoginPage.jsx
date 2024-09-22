@@ -1,16 +1,27 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Eye, EyeOff, Music } from 'lucide-react';
 
 const LoginPage = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showPassword, setShowPassword] = useState(false);
+  const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login submitted', { email, password });
+    setError(''); // Clear any existing errors
+
+    if (email === 'admin@gmail.com' && password === 'admin') {
+      // Admin login successful
+      console.log('Admin login successful');
+      navigate('/admin-dashboard'); // Redirect to admin dashboard
+    } else {
+      // Regular user login logic here
+      console.log('Regular user login attempt', { email, password });
+      setError('Invalid email or password. Please try again.');
+    }
   };
 
   const handleGoogleLogin = () => {
@@ -35,6 +46,11 @@ const LoginPage = () => {
       <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div className="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
           <form className="space-y-6" onSubmit={handleSubmit}>
+            {error && (
+              <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+                <span className="block sm:inline">{error}</span>
+              </div>
+            )}
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700">
                 Email address
