@@ -17,9 +17,13 @@ const LoginPage = () => {
       // Admin login successful
       console.log('Admin login successful');
       navigate('/admin-dashboard'); // Redirect to admin dashboard
+    } else if (email === 'user@gmail.com' && password === 'user') {
+      // Regular user login successful
+      console.log('User login successful');
+      navigate('/user-dashboard'); // Redirect to user dashboard
     } else {
-      // Regular user login logic here
-      console.log('Regular user login attempt', { email, password });
+      // Invalid credentials
+      console.log('Login attempt failed', { email, password });
       setError('Invalid email or password. Please try again.');
     }
   };
@@ -27,6 +31,8 @@ const LoginPage = () => {
   const handleGoogleLogin = () => {
     // Handle Google login logic here
     console.log('Google login initiated');
+    // For demonstration, let's assume Google login always succeeds as a regular user
+    navigate('/user-dashboard');
   };
 
   return (
