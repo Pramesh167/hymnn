@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
-import { ArrowLeft, User, Phone, Mail, MapPin } from 'lucide-react';
+import { ArrowLeft, User, Phone, Mail, MapPin, Calendar } from 'lucide-react';
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { instrument, rentalDays } = location.state || {};
+  const { instrument, startDate, endDate, rentalDays } = location.state || {};
 
   const [formData, setFormData] = useState({
     firstName: '',
@@ -24,14 +24,22 @@ const Checkout = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Here you would typically process the payment and submit the order
-    console.log('Order submitted:', { ...formData, instrument, rentalDays });
+    console.log('Order submitted:', { ...formData, instrument, startDate, endDate, rentalDays });
     // Navigate to a confirmation page or back to the dashboard
     navigate('/confirmation');
   };
 
-  if (!instrument || !rentalDays) {
+  if (!instrument || !startDate || !endDate || !rentalDays) {
     return <div>Error: Missing rental information</div>;
   }
+
+  const formatDate = (date) => {
+    return new Date(date).toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+  };
 
   return (
     <motion.div
@@ -57,6 +65,14 @@ const Checkout = () => {
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Instrument:</span>
               <span className="font-medium">{instrument.name}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">Start Date:</span>
+              <span className="font-medium">{formatDate(startDate)}</span>
+            </div>
+            <div className="flex justify-between items-center">
+              <span className="text-gray-600">End Date:</span>
+              <span className="font-medium">{formatDate(endDate)}</span>
             </div>
             <div className="flex justify-between items-center">
               <span className="text-gray-600">Rental Period:</span>

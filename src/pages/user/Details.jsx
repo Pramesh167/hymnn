@@ -1,11 +1,15 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { ArrowLeft, Calendar, Music, Star, Clock } from 'lucide-react';
 import { motion } from 'framer-motion';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
 
 const Details = () => {
   const { id } = useParams();
   const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(new Date());
+  const [endDate, setEndDate] = useState(new Date());
   const [rentalDays, setRentalDays] = useState(1);
 
   // Mock data - in a real application, you'd fetch this data based on the id
@@ -23,9 +27,23 @@ const Details = () => {
     reviews: 24
   };
 
+  useEffect(() => {
+    // Calculate rental days whenever start or end date changes
+    const days = Math.ceil((endDate - startDate) / (1000 * 60 * 60 * 24));
+    setRentalDays(days > 0 ? days : 1);
+  }, [startDate, endDate]);
+
+  const handleStartDateChange = (date) => {
+    setStartDate(date);
+    // If the new start date is after the current end date, update the end date
+    if (date > endDate) {
+      setEndDate(date);
+    }
+  };
+
   const handleRent = () => {
-    // Navigate to the checkout page with instrument and rental days information
-    navigate('/checkout', { state: { instrument, rentalDays } });
+    // Navigate to the checkout page with instrument and rental information
+    navigate('/checkout', { state: { instrument, startDate, endDate, rentalDays } });
   };
 
   return (
@@ -80,19 +98,51 @@ const Details = () => {
               </div>
             </div>
 
-            <div className="mt-6">
-              <label htmlFor="days" className="block text-sm font-medium text-gray-700">
-                Number of days to rent
+            <div className="mt-6 grid grid-cols-2 gap-4">
+              <div>
+                <label htmlFor="startDate" className="block text-sm font-medium text-gray-700">
+                  Rental Start Date
+                </label>
+                <DatePicker
+                  id="startDate"
+                  selected={startDate}
+                  onChange={handleStartDateChange}
+                  selectsStart
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={new Date()}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                />
+              </div>
+              <div>
+                <label htmlFor="endDate" className="block text-sm font-medium text-gray-700">
+                  Rental End Date
+                </label>
+                <DatePicker
+                  id="endDate"
+                  selected={endDate}
+                  onChange={date => setEndDate(date)}
+                  selectsEnd
+                  startDate={startDate}
+                  endDate={endDate}
+                  minDate={startDate}
+                  className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-red-500 focus:ring-red-500 sm:text-sm"
+                />
+              </div>
+            </div>
+
+            <div className="mt-4">
+              <label htmlFor="rentalDays" className="block text-sm font-medium text-gray-700">
+                Rental Period
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
                 <input
                   type="number"
-                  name="days"
-                  id="days"
-                  className="focus:ring-red-500 focus:border-red-500 flex-1 block w-full rounded-none rounded-l-md sm:text-sm border-gray-300"
-                  placeholder="1"
+                  name="rentalDays"
+                  id="rentalDays"
+                  className="focus:ring-red-500 focus:border-red-500 flex-1 block w-full rounded-md sm:text-sm border-gray-300"
                   value={rentalDays}
-                  onChange={(e) => setRentalDays(Math.max(1, parseInt(e.target.value) || 1))}
+                  readOnly
                 />
                 <span className="inline-flex items-center px-3 rounded-r-md border border-l-0 border-gray-300 bg-gray-50 text-gray-500 text-sm">
                   days
