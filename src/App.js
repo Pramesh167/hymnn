@@ -11,6 +11,8 @@ import Details from './pages/user/Details.jsx';
 import RentNow from './pages/user/RentNow.jsx';
 import Checkout from './pages/payment/CheckOut.jsx';
 
+import ForgotPassword from './pages/forgotpassword/ForgotPassword.jsx';
+
 function App() {
   return (
     <Router>
@@ -25,6 +27,8 @@ function App() {
         <Route path="/rent-now" element={<RentNow />} />
         <Route path="/instrument/:id" element={<Details />} />
         <Route path="/checkout" element={<Checkout />} />
+
+        <Route path='forgot-password' element={<ForgotPassword />} />
       </Routes>
     </Router>
   );
