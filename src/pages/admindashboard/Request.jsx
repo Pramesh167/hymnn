@@ -25,11 +25,7 @@ const Request = () => {
   const handleApprove = (id) => {
     changeInstrumentStatus(id)
       .then((response) => {
-        setRequests(
-          requests.map((request) =>
-            request.id === id ? { ...request, added: true } : request
-          )
-        );
+        window.location.reload();
       })
       .catch((error) => {
         console.error(error);
@@ -51,7 +47,7 @@ const Request = () => {
   return (
     <div className='max-w-4xl mx-auto bg-white p-8 rounded-lg shadow-md'>
       <h2 className='text-3xl font-bold text-gray-900 mb-6'>
-        Manage Rental Requests
+        Manage User Requests
       </h2>
       <div className='space-y-4'>
         {requests.map((request) => (

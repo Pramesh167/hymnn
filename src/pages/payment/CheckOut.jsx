@@ -26,7 +26,6 @@ const Checkout = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Here you would typically process the payment and submit the order
     console.log('Order submitted:', {
       ...formData,
       instrument,
@@ -50,7 +49,7 @@ const Checkout = () => {
       .catch((error) => {
         toast.error('Error placing order');
       });
-    // Navigate to a confirmation page or back to the dashboard
+
     navigate('/user-dashboard');
   };
 
@@ -233,10 +232,16 @@ const Checkout = () => {
         </div>
 
         <div className='px-6 py-4 bg-gray-50 border-t border-gray-200'>
+          <p className='text-sm text-gray-600 mb-2'>
+            By clicking "Rent Now," you agree to our terms and conditions.
+          </p>
+          <p className='text-sm text-gray-600 mb-2'>
+            You can do payment while receiving your rented instrument.
+          </p>
           <button
             type='submit'
             className='w-full bg-red-600 text-white py-3 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out font-semibold text-lg'>
-            Pay Now - Rs {instrument.price * rentalDays}
+            Rent Now - Rs {instrument.instrumentRentalPrice * rentalDays}
           </button>
         </div>
       </form>

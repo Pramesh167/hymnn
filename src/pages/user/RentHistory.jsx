@@ -15,7 +15,13 @@ const RentHistory = () => {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, [user.id]);
+
+  const calculateStatus = (returnDate) => {
+    const now = new Date();
+    const rentalEnd = new Date(returnDate);
+    return now > rentalEnd ? 'Completed' : 'Active';
+  };
 
   return (
     <div>
@@ -33,7 +39,7 @@ const RentHistory = () => {
                   </p>
                   <div className='ml-2 flex-shrink-0 flex'>
                     <p className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-                      {rental.status}
+                      {calculateStatus(rental.returnDate)}
                     </p>
                   </div>
                 </div>
@@ -44,7 +50,8 @@ const RentHistory = () => {
                         className='flex-shrink-0 mr-1.5 h-5 w-5 text-gray-400'
                         aria-hidden='true'
                       />
-                      {rental.rentalDate} - {rental.returnDate}
+                      {new Date(rental.rentalDate).toLocaleDateString()} -{' '}
+                      {new Date(rental.returnDate).toLocaleDateString()}
                     </p>
                   </div>
                 </div>
