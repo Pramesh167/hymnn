@@ -7,11 +7,14 @@ import {
   LogOut,
   Menu,
   X,
-  ChevronRight
+  ChevronRight,
+  FileText 
 } from 'lucide-react';
 import Dashboard from './Dashboard';
 import Products from './Product';
 import Notifications from '../../components/Notification';
+import Request from './Request';
+
 
 const AdminDashboard = () => {
   const [activeTab, setActiveTab] = useState('Dashboard');
@@ -34,6 +37,7 @@ const AdminDashboard = () => {
   const sidebarItems = [
     { name: 'Dashboard', icon: Home },
     { name: 'Products', icon: ShoppingBag },
+    { name: 'Requests', icon: FileText }, // New item for Requests
     { name: 'Notifications', icon: Bell },
   ];
 
@@ -43,6 +47,8 @@ const AdminDashboard = () => {
         return <Dashboard addNotification={addNotification} />;
       case 'Products':
         return <Products />;
+      case 'Requests':
+        return <Request />; // Render the Requests component
       case 'Notifications':
         return <Notifications notifications={notifications} setNotifications={setNotifications} />;
       default:
@@ -84,6 +90,7 @@ const AdminDashboard = () => {
               <ChevronRight className={`ml-auto transition-transform duration-200 ${activeTab === item.name ? 'rotate-90' : ''}`} size={16} />
             </a>
           ))}
+          
         </nav>
         <button 
           onClick={handleLogout}

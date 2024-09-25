@@ -4,17 +4,17 @@ import { motion, AnimatePresence } from 'framer-motion';
 
 const Products = () => {
   const [products, setProducts] = useState([
-    { id: 1, name: 'Acoustic Guitar', image: 'guitar.jpg', type: 'String', quantity: 10, price: 599.99, description: 'Beautiful acoustic guitar' },
-    { id: 2, name: 'Electric Piano', image: 'piano.jpg', type: 'Keyboard', quantity: 5, price: 1299.99, description: 'Professional electric piano' },
+    { id: 1, name: 'Acoustic Guitar', image: 'guitar.jpg', category: 'String', dailyRate: 50, availability: 'Available', condition: 'Excellent' },
+    { id: 2, name: 'Electric Piano', image: 'piano.jpg', category: 'Keyboard', dailyRate: 100, availability: 'Rented', condition: 'Good' },
   ]);
 
   const [newProduct, setNewProduct] = useState({
     name: '',
     image: null,
-    type: '',
-    quantity: 0,
-    price: 0,
-    description: ''
+    category: '',
+    dailyRate: 0,
+    availability: 'Available',
+    condition: ''
   });
 
   const [isFormVisible, setIsFormVisible] = useState(false);
@@ -40,7 +40,7 @@ const Products = () => {
     e.preventDefault();
     const id = products.length + 1;
     setProducts([...products, { id, ...newProduct }]);
-    setNewProduct({ name: '', image: null, type: '', quantity: 0, price: 0, description: '' });
+    setNewProduct({ name: '', image: null, category: '', dailyRate: 0, availability: 'Available', condition: '' });
     if (fileInputRef.current) {
       fileInputRef.current.value = '';
     }
@@ -59,7 +59,7 @@ const Products = () => {
       className="space-y-6"
     >
       <div className="flex justify-between items-center">
-        <h2 className="text-3xl font-bold text-gray-800">Manage Products</h2>
+        <h2 className="text-3xl font-bold text-gray-800">Manage Rental Instruments</h2>
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -67,7 +67,7 @@ const Products = () => {
           onClick={() => setIsFormVisible(!isFormVisible)}
         >
           {isFormVisible ? <X size={20} className="mr-2" /> : <Plus size={20} className="mr-2" />}
-          {isFormVisible ? 'Cancel' : 'Add New Product'}
+          {isFormVisible ? 'Cancel' : 'Add New Instrument'}
         </motion.button>
       </div>
       
@@ -82,10 +82,10 @@ const Products = () => {
             onSubmit={handleAddProduct}
             className="mb-8 bg-white p-6 rounded-lg shadow-lg overflow-hidden"
           >
-            <h3 className="text-xl font-semibold mb-4">Add New Product</h3>
+            <h3 className="text-xl font-semibold mb-4">Add New Rental Instrument</h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
-                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Product Name</label>
+                <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">Instrument Name</label>
                 <input
                   type="text"
                   id="name"
@@ -97,56 +97,49 @@ const Products = () => {
                 />
               </div>
               <div>
-                <label htmlFor="type" className="block text-sm font-medium text-gray-700 mb-1">Product Type</label>
+                <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-1">Category</label>
                 <input
                   type="text"
-                  id="type"
-                  name="type"
-                  value={newProduct.type}
+                  id="category"
+                  name="category"
+                  value={newProduct.category}
                   onChange={handleInputChange}
                   className="border p-2 rounded-md w-full focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   required
                 />
               </div>
               <div>
-                <label htmlFor="quantity" className="block text-sm font-medium text-gray-700 mb-1">Product Quantity</label>
+                <label htmlFor="dailyRate" className="block text-sm font-medium text-gray-700 mb-1">Daily Rental Rate (NPR)</label>
                 <input
                   type="number"
-                  id="quantity"
-                  name="quantity"
-                  value={newProduct.quantity}
-                  onChange={handleInputChange}
-                  className="border p-2 rounded-md w-full focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="price" className="block text-sm font-medium text-gray-700 mb-1">Product Price (NPR)</label>
-                <input
-                  type="number"
-                  id="price"
-                  name="price"
-                  value={newProduct.price}
+                  id="dailyRate"
+                  name="dailyRate"
+                  value={newProduct.dailyRate}
                   onChange={handleInputChange}
                   className="border p-2 rounded-md w-full focus:ring-2 focus:ring-red-500 focus:border-transparent"
                   step="0.01"
                   required
                 />
               </div>
-              <div className="md:col-span-2">
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-1">Product Description</label>
-                <textarea
-                  id="description"
-                  name="description"
-                  value={newProduct.description}
+              <div>
+                <label htmlFor="condition" className="block text-sm font-medium text-gray-700 mb-1">Condition</label>
+                <select
+                  id="condition"
+                  name="condition"
+                  value={newProduct.condition}
                   onChange={handleInputChange}
                   className="border p-2 rounded-md w-full focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                  rows="3"
                   required
-                />
+                >
+                  <option value="">Select Condition</option>
+                  <option value="Excellent">Excellent</option>
+                  <option value="Good">Good</option>
+                  <option value="Fair">Fair</option>
+                  <option value="Poor">Poor</option>
+                </select>
               </div>
               <div className="md:col-span-2">
-                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Product Image</label>
+                <label htmlFor="image" className="block text-sm font-medium text-gray-700 mb-1">Instrument Image</label>
                 <input
                   type="file"
                   id="image"
@@ -179,7 +172,7 @@ const Products = () => {
               className="mt-6 bg-red-600 text-white px-6 py-2 rounded-md hover:bg-red-700 transition-colors duration-300 flex items-center justify-center"
             >
               <Plus size={20} className="mr-2" />
-              Add Product
+              Add Instrument
             </motion.button>
           </motion.form>
         )}
@@ -190,7 +183,7 @@ const Products = () => {
         <table className="min-w-full divide-y divide-gray-200">
           <thead className="bg-gray-50">
             <tr>
-              {['Image', 'Name', 'Type', 'Quantity', 'Price', 'Actions'].map((header) => (
+              {['Image', 'Name', 'Category', 'Daily Rate', 'Availability', 'Condition', 'Actions'].map((header) => (
                 <th key={header} className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   {header}
                 </th>
@@ -211,9 +204,10 @@ const Products = () => {
                     <img src={product.image} alt={product.name} className="h-12 w-12 rounded-full object-cover" />
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">{product.name}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{product.type}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">{product.quantity}</td>
-                  <td className="px-6 py-4 whitespace-nowrap">NPR {product.price.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{product.category}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">NPR {product.dailyRate.toFixed(2)}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{product.availability}</td>
+                  <td className="px-6 py-4 whitespace-nowrap">{product.condition}</td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <motion.button
                       whileHover={{ scale: 1.1 }}
