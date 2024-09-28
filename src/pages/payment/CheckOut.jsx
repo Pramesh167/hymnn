@@ -31,8 +31,7 @@ const Checkout = () => {
     setShowModal(true);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
+  const handleSubmit = (paymentMethod) => {
     console.log('Order submitted:', {
       ...formData,
       instrument,
@@ -54,7 +53,7 @@ const Checkout = () => {
         toast.success('Order placed successfully');
         const paymentData = {
           paymentAmount: instrument.instrumentRentalPrice * rentalDays,
-          paymentMethod: selectPaymentMethod,
+          paymentType: paymentMethod,
           rental: response.data.rent,
           user: user,
         };
@@ -62,7 +61,7 @@ const Checkout = () => {
         addPayment(paymentData)
           .then((response) => {
             const responseJson = JSON.parse(response.data.paymentId);
-            if (selectPaymentMethod === 'cash') {
+            if (paymentMethod === 'cash') {
               toast.success('Payment added successfully');
               return;
             }
@@ -292,17 +291,16 @@ const Checkout = () => {
                 <div className='flex items-center space-x-4'>
                   <button
                     className='bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out'
-                    onClick={(e) => {
+                    onClick={() => {
                       setSelectPaymentMethod('online');
-                      handleSubmit(e);
+                      handleSubmit('online');
                     }}>
                     Pay Online
                   </button>
                   <button
                     className='bg-red-600 text-white py-2 px-4 rounded-md hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-opacity-50 transition duration-150 ease-in-out'
-                    onClick={(e) => {
-                      setSelectPaymentMethod('cash');
-                      handleSubmit(e);
+                    onClick={() => {
+                      handleSubmit('cash');
                     }}>
                     Pay on Delivery
                   </button>

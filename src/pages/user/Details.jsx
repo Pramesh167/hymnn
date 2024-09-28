@@ -34,7 +34,7 @@ const Details = () => {
     setStartDate(date);
     // If the new start date is after the current end date, update the end date
     if (date > endDate) {
-      setEndDate(date);
+      setEndDate(date + 1);
     }
   };
 

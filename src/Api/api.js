@@ -92,3 +92,13 @@ export const returnInstrument = async (id) => {
 export const addPayment = async (data) => {
   return Api.post(`/payment/add`, data, jsonConfig);
 };
+
+// verify
+export const verifyPayment = async (data, id) => {
+  return Api.put(`/payment/verify/${id}`, data, jsonConfig);
+};
+
+//  notification
+export const addNotification = async (data) => {
+  return Api.get('/send-notification', data, jsonConfig);
+};
