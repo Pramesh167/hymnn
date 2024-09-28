@@ -15,7 +15,14 @@ const RentNow = () => {
     // All instruments
     getInstruments()
       .then((response) => {
-        setInstruments(response.data.instruments);
+        const instruments = response.data.instruments;
+        // only get instrument if available
+        setInstruments(
+          instruments.filter(
+            (instrument) =>
+              instrument.instrumentRentalStatus.toLowerCase() === 'available'
+          )
+        );
       })
       .catch((error) => {
         console.error(error);

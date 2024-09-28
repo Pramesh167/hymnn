@@ -1,13 +1,13 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import { AlertCircle, Clock } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { getAllRent } from '../../Api/api';
+import { getAllRent, returnInstrument } from '../../Api/api';
 
 const Dashboard = ({ addNotification }) => {
-  const [reportType, setReportType] = useState('daily');
   const [rentalData, setRentalData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filterPending, setFilterPending] = useState(true);
 
   useEffect(() => {
     const fetchRentals = async () => {
@@ -23,17 +23,16 @@ const Dashboard = ({ addNotification }) => {
     };
 
     fetchRentals();
+  }, []);
 
+  useEffect(() => {
     const timer = setInterval(() => {
       const now = Date.now();
-
       setRentalData((prevData) =>
         prevData.map((rental) => {
           const returnDate = new Date(rental.returnDate).getTime();
           if (returnDate < now) {
-            // addNotification(
-            //   `Rental timer for ${rental.user.username}'s ${rental.instrument.instrumentName} has ended`
-            // );
+            returnInstrument(rental.id); // Call returnInstrument API
             return { ...rental, hasEnded: true }; // Add temporary flag
           } else {
             return rental; // Return the rental as is if not completed
@@ -43,7 +42,7 @@ const Dashboard = ({ addNotification }) => {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [addNotification]);
+  }, []);
 
   const formatTime = (returnDate) => {
     const timeLeft = new Date(returnDate).getTime() - Date.now();
@@ -64,10 +63,9 @@ const Dashboard = ({ addNotification }) => {
     );
   };
 
-  const filteredRentalData =
-    reportType === 'daily'
-      ? rentalData.filter((rental) => !rental.hasEnded)
-      : rentalData;
+  const filteredRentalData = filterPending
+    ? rentalData.filter((rental) => !rental.hasEnded)
+    : rentalData;
 
   return (
     <motion.div
@@ -80,6 +78,19 @@ const Dashboard = ({ addNotification }) => {
       </div>
       {loading && <div>Loading...</div>}
       {error && <div className='text-red-500'>{error}</div>}
+
+      {/* FIlter */}
+      <div className='flex justify-end'>
+        <button
+          onClick={() => setFilterPending(!filterPending)}
+          className={`px-4 py-2 rounded-md transition-all duration-300 ${
+            filterPending
+              ? 'bg-blue-500 text-white hover:bg-blue-600 hover:shadow-md'
+              : 'bg-gray-500 text-white hover:bg-gray-600 hover:shadow-md'
+          }`}>
+          {filterPending ? 'Show All' : 'Show Pending'}
+        </button>
+      </div>
 
       <div className='bg-white shadow-lg rounded-lg overflow-hidden'>
         <div className='overflow-x-auto'>
@@ -146,16 +157,16 @@ const Dashboard = ({ addNotification }) => {
                           <AlertCircle
                             className='mr-1'
                             size={16}
-                          />{' '}
-                          Overdue
+                          />
+                          {rental.status}
                         </span>
                       ) : (
                         <span className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800'>
                           <Clock
                             className='mr-1'
                             size={16}
-                          />{' '}
-                          Active
+                          />
+                          {rental.status}
                         </span>
                       )}
                     </td>

@@ -82,3 +82,13 @@ export const getUserInstruments = async () => {
 export const changeInstrumentStatus = async (id) => {
   return Api.put(`/instrument/change/${id}`, jsonConfig);
 };
+
+// return instrument
+export const returnInstrument = async (id) => {
+  return Api.put(`/rental/return/${id}`, jsonConfig);
+};
+
+// payment
+export const addPayment = async (data) => {
+  return Api.post(`/payment/add`, data, jsonConfig);
+};

@@ -1,6 +1,6 @@
 import { Clock } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import { getRentByUserId } from '../../Api/api';
+import { getRentByUserId, returnInstrument } from '../../Api/api';
 
 const RentHistory = () => {
   const [rentals, setRentals] = useState([]);
@@ -17,11 +17,24 @@ const RentHistory = () => {
       });
   }, [user.id]);
 
-  const calculateStatus = (returnDate) => {
-    const now = new Date();
-    const rentalEnd = new Date(returnDate);
-    return now > rentalEnd ? 'Completed' : 'Active';
-  };
+  useEffect(() => {
+    const timer = setInterval(() => {
+      const now = Date.now();
+      setRentals((prevData) =>
+        prevData.map((rental) => {
+          const returnDate = new Date(rental.returnDate).getTime();
+          if (returnDate < now) {
+            returnInstrument(rental.id); // Call returnInstrument API
+            return { ...rental, hasEnded: true }; // Add temporary flag
+          } else {
+            return rental; // Return the rental as is if not completed
+          }
+        })
+      );
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   return (
     <div>
@@ -39,7 +52,7 @@ const RentHistory = () => {
                   </p>
                   <div className='ml-2 flex-shrink-0 flex'>
                     <p className='px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800'>
-                      {calculateStatus(rental.returnDate)}
+                      {rental.status}
                     </p>
                   </div>
                 </div>
