@@ -13,6 +13,7 @@ import Checkout from './pages/payment/CheckOut.jsx';
 
 import ForgotPassword from './pages/forgotpassword/ForgotPassword.jsx';
 import Request from './pages/admindashboard/Request.jsx';
+import Successful from './pages/payment/Sucessful.jsx';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         <Route path="/checkout" element={<Checkout />} />
         <Route path="/request" element={<Request/>} />
         <Route path='forgot-password' element={<ForgotPassword />} />
+        <Route path='sucessful' element={<Successful />} />
       </Routes>
     </Router>
   );
