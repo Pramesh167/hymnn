@@ -27,7 +27,16 @@ const RentHistory = () => {
             returnInstrument(rental.id); // Call returnInstrument API
             return { ...rental, hasEnded: true }; // Add temporary flag
           } else {
-            return rental; // Return the rental as is if not completed
+            const timeLeft = returnDate - now;
+            const days = Math.floor(timeLeft / (1000 * 60 * 60 * 24));
+            const hours = Math.floor(
+              (timeLeft % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
+            );
+            const minutes = Math.floor(
+              (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+            );
+            const seconds = Math.floor((timeLeft % (1000 * 60)) / 1000);
+            return { ...rental, timeLeft: { days, hours, minutes, seconds } };
           }
         })
       );
@@ -67,6 +76,17 @@ const RentHistory = () => {
                       {new Date(rental.returnDate).toLocaleDateString()}
                     </p>
                   </div>
+                  {rental.timeLeft && !rental.hasEnded && (
+                    <p className='mt-2 flex items-center text-sm text-gray-500 sm:mt-0 sm:ml-6'>
+                      Time Left: {rental.timeLeft.days}d {rental.timeLeft.hours}
+                      h {rental.timeLeft.minutes}m {rental.timeLeft.seconds}s
+                    </p>
+                  )}
+                  {rental.hasEnded && (
+                    <p className='mt-2 flex items-center text-sm text-red-500 sm:mt-0 sm:ml-6'>
+                      Rental period has ended
+                    </p>
+                  )}
                 </div>
               </div>
             </li>
